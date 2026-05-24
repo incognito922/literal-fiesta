@@ -1,0 +1,54 @@
+namespace terminalFX {
+
+    // Typing effect: prints text one character at a time
+    export function typeText(text: string, speed: number = 50) {
+        let line = ""
+        for (let i = 0; i < text.length; i++) {
+            line += text.charAt(i)
+            game.consoleOverlay.setVisible(true)
+            game.consoleOverlay.print(line)
+            pause(speed)
+        }
+    }
+
+    // Screen wipe effect (left to right)
+    export function screenWipe(color: number = 15, delay: number = 5) {
+        const s = screen.width
+        const h = screen.height
+        for (let x = 0; x < s; x++) {
+            screen.fillRect(x, 0, 1, h, color)
+            pause(delay)
+        }
+    }
+
+    // Glitch text effect
+    export function glitchText(text: string, repeats: number = 10, speed: number = 40) {
+        for (let i = 0; i < repeats; i++) {
+            let scrambled = ""
+            for (let c of text) {
+                scrambled += Math.randomRange(0, 10) > 7 ? String.fromCharCode(Math.randomRange(33, 126)) : c
+            }
+            game.consoleOverlay.setVisible(true)
+            game.consoleOverlay.print(scrambled)
+            pause(speed)
+        }
+        game.consoleOverlay.print(text)
+    }
+
+    // CRT scanline overlay
+    export function scanlines(opacity: number = 80) {
+        const img = image.create(screen.width, screen.height)
+        for (let y = 0; y < screen.height; y += 2) {
+            img.fillRect(0, y, screen.width, 1, 1)
+        }
+        screen.setOverlay(img)
+        screen.setOverlayTransparency(opacity)
+    }
+
+    // Flash effect
+    export function flash(color: number = 1, duration: number = 100) {
+        screen.fill(color)
+        pause(duration)
+        screen.fill(0)
+    }
+}
